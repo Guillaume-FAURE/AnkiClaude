@@ -220,6 +220,9 @@ export default function Account() {
         <input ref={backupInput} type="file" accept="application/json,.json" hidden onChange={(e) => doImport(e.target.files?.[0])} />
       </section>
       {backupMsg && <div className="notice">{backupMsg}</div>}
+      <p className="muted small" style={{ margin: 0, textAlign: 'center' }}>
+        Version {__APP_VERSION__}
+      </p>
     </main>
   );
 }

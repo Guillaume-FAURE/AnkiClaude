@@ -5,6 +5,10 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig({
   // Relative base: works on GitHub Pages under /<repo>/ and locally.
   base: './',
+  define: {
+    // Commit the build comes from, shown in the account page.
+    __APP_VERSION__: JSON.stringify((process.env.GITHUB_SHA ?? 'dev').slice(0, 7)),
+  },
   plugins: [
     react(),
     VitePWA({
