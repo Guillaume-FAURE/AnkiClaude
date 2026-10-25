@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createEmptyCard } from 'ts-fsrs';
 import type { Card, Deck } from '../db';
-import { buildQueue, deckStats, formatInterval, grade, mixQueue, preview, Rating } from './srs';
+import { buildQueue, deckStats, formatInterval, grade, preview, Rating } from './srs';
 
 const now = new Date('2026-10-25T10:00:00Z');
 
@@ -69,20 +69,6 @@ describe('buildQueue', () => {
     const queue = buildQueue(deck({ direction: 'both', newPerDay: 10 }), [card(1)], 0, now);
     expect(queue).toHaveLength(2);
     expect(new Set(queue.map((q) => q.direction))).toEqual(new Set(['forward', 'reverse']));
-  });
-
-  it('never shows both directions of a card back to back', () => {
-    const items = Array.from({ length: 8 }, (_, i) => i + 1).flatMap((id) => [
-      { cardId: id, direction: 'forward' as const },
-      { cardId: id, direction: 'reverse' as const },
-    ]);
-    for (let run = 0; run < 200; run++) {
-      const queue = mixQueue(items);
-      expect(queue).toHaveLength(16);
-      // Every card appears once before any card appears a second time.
-      expect(new Set(queue.slice(0, 8).map((q) => q.cardId)).size).toBe(8);
-      for (let i = 1; i < queue.length; i++) expect(queue[i].cardId).not.toBe(queue[i - 1].cardId);
-    }
   });
 });
 

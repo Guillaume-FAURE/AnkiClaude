@@ -6,13 +6,11 @@ import { db, type Card, type Deck } from '../db';
 import { languageLabel } from '../lib/languages';
 import { newSeenToday } from '../lib/queries';
 import { playWord, speak, stopSpeaking } from '../lib/speech';
-import { buildQueue, formatInterval, grade, GRADES, mixQueue, preview, Rating, srsOf, type QueueItem } from '../lib/srs';
+import { buildQueue, formatInterval, grade, GRADES, preview, shuffle, Rating, srsOf, type QueueItem } from '../lib/srs';
 import { wordClass } from './DeckPage';
 
 /** Cards answered within this delay come back in the same session. */
 const RELEARN_WINDOW_MS = 20 * 60 * 1000;
-/** A card coming back is shown again no sooner than this many cards later. */
-const RELEARN_MIN_GAP = 3;
 
 interface Session {
   decks: Map<number, Deck>;
@@ -31,7 +29,7 @@ async function loadSession(deckId: number | null): Promise<Session> {
     queue.push(...buildQueue(deck, deckCards, seen.get(deck.id) ?? 0));
   }
   // Mix decks together when reviewing everything.
-  return { decks: new Map(decks.map((d) => [d.id, d])), cards, queue: decks.length > 1 ? mixQueue(queue) : queue };
+  return { decks: new Map(decks.map((d) => [d.id, d])), cards, queue: decks.length > 1 ? shuffle(queue) : queue };
 }
 
 export default function Review() {
@@ -84,9 +82,8 @@ export default function Review() {
 
     const queue = [...session.queue];
     if (next.due.getTime() - now.getTime() < RELEARN_WINDOW_MS) {
-      // Put it back at a random place among the remaining cards, not right away.
-      const earliest = Math.min(queue.length, position + 1 + RELEARN_MIN_GAP);
-      const at = earliest + Math.floor(Math.random() * (queue.length - earliest + 1));
+      // Put it back at a random place among the remaining cards.
+      const at = position + 1 + Math.floor(Math.random() * (queue.length - position));
       queue.splice(at, 0, item);
     }
     setSession({ ...session, queue });
