@@ -222,6 +222,11 @@ export default function Review() {
           <button type="button" className="review-card" onClick={() => setRevealed(true)}>
             <span className="eyebrow">{languageLabel(promptLang)}</span>
             <span className={`prompt-word ${wordClass(promptLang)}`}>{promptText}</span>
+            {forward && card.pronunciation && deck.showPronunciationOnFront !== false && (
+              <span className="muted" style={{ fontSize: 20 }}>
+                {card.pronunciation}
+              </span>
+            )}
             <span className="muted" style={{ fontSize: 14 }}>
               Touchez la carte pour révéler
             </span>

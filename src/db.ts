@@ -19,6 +19,8 @@ export interface Deck {
   /** speechSynthesis voiceURI, '' = best voice for the language. */
   voiceURI: string;
   newPerDay: number;
+  /** Show the transcription with the word on the question side (absent = true). */
+  showPronunciationOnFront?: boolean;
   createdAt: Date;
   lastReviewedAt: Date | null;
 }

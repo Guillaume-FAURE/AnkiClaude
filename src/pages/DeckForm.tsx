@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Field, TopBar } from '../components/common';
 import { SparkleIcon, TrashIcon } from '../components/Icons';
 import { db, type DirectionMode, type NewDeck } from '../db';
-import { LANGUAGES, TRANSCRIPTIONS, language, languageLabel } from '../lib/languages';
+import { LANGUAGES, TRANSCRIPTIONS, language, languageLabel, transcriptionLabel } from '../lib/languages';
 import { deleteDeck } from '../lib/queries';
 import { useVoices, voicesFor } from '../lib/speech';
 
@@ -194,6 +194,22 @@ export default function DeckForm() {
             ))}
           </div>
         </div>
+        {deck.transcription !== 'none' && deck.direction !== 'reverse' && (
+          <button
+            type="button"
+            className="toggle-row"
+            aria-pressed={deck.showPronunciationOnFront !== false}
+            onClick={() => set('showPronunciationOnFront', deck.showPronunciationOnFront === false)}
+          >
+            <span className="stack" style={{ gap: 2 }}>
+              <span style={{ fontSize: 15, fontWeight: 500 }}>
+                Afficher le {transcriptionLabel(deck.transcription)} sur la question
+              </span>
+              <span className="muted small">Sous le mot en {target.toLowerCase()}, avant de révéler la réponse</span>
+            </span>
+            <span className="switch" />
+          </button>
+        )}
         <Field label="Nouvelles cartes par jour" htmlFor="d-new">
           <input
             id="d-new"
