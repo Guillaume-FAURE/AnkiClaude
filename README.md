@@ -14,6 +14,28 @@ L'application n'est liée à aucune langue : chaque deck définit sa langue étu
 - Données stockées en local, avec export / import de sauvegarde
 - 6 thèmes (Clair, Sombre et les palettes [Catppuccin](https://github.com/catppuccin/catppuccin) Latte, Frappé, Macchiato, Mocha) et une couleur d'accent au choix
 
+## Essayer l'application
+
+Version en ligne : https://guillaume-faure.github.io/AnkiClaude/
+
+Sur Android, ouvrez le lien dans Chrome puis menu ⋮ → « Installer l'application » (ou « Ajouter à l'écran d'accueil »). L'application fonctionne ensuite hors ligne ; seules les requêtes à l'IA demandent une connexion.
+
+Pour l'assistant IA, créez une clé API sur [console.anthropic.com](https://console.anthropic.com) et collez-la dans « Mon compte ». La clé reste sur l'appareil et n'est jamais incluse dans les sauvegardes.
+
+Pour la voix en cantonais : Réglages Android → Synthèse vocale → Moteur Google → installer la voix « Chinois (Hong Kong) ».
+
+## Développement
+
+```bash
+npm install
+npm run dev        # serveur local
+npm test           # tests unitaires (Vitest)
+npm run build      # typecheck + build de la PWA dans dist/
+```
+
+Stack : React, Vite, TypeScript, Dexie (IndexedDB), ts-fsrs, SDK Anthropic, vite-plugin-pwa.
+Chaque push sur `main` ou sur la branche de travail est testé, construit et publié sur la branche `gh-pages` par [GitHub Actions](.github/workflows/deploy.yml).
+
 ## Design
 
 Maquettes interactives (Claude Design) : https://claude.ai/artifact/KwduyvUVbsWnsZ1MQDz5BL
@@ -37,16 +59,18 @@ Les sources sont dans [`design/`](design/) :
 
 Les fichiers `.dc.html` sont au format Claude Design : ils s'affichent dans le canevas ci-dessus, pas directement dans un navigateur.
 
-## Modèle de données (prévu)
+## Modèle de données
 
 - **Deck** : nom, langue étudiée, langue de traduction, langue secondaire (facultatif), transcription (Jyutping, Pinyin, Rōmaji, API, aucune), voix, sens de révision
 - **Carte** : mot, prononciation (facultatif), traduction, traduction secondaire (facultatif), exemple (facultatif), audio (facultatif), état de répétition espacée
 - **Profil** : nom, photo, thème, accent, fournisseur IA et clé
 
-## Prochaines étapes
+## État
 
-1. Application web installable (PWA) : stockage local (IndexedDB), hors ligne, thèmes
-2. Révision avec FSRS
-3. Assistant IA (API Anthropic)
-4. Audio (synthèse vocale + enregistrement)
-5. Déploiement sur GitHub Pages
+- [x] PWA installable, hors ligne, données locales (IndexedDB) et thèmes
+- [x] Révision avec FSRS (sens aller, retour ou les deux ; nouvelles cartes par jour)
+- [x] Assistant IA : ajout de mots, corrections, exemples, avec validation avant application
+- [x] Audio : voix de synthèse par langue et enregistrement de sa voix
+- [x] Sauvegarde / restauration JSON
+- [ ] Statistiques et historique
+- [ ] Génération audio de meilleure qualité (TTS en ligne)
