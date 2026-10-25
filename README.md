@@ -34,7 +34,7 @@ npm run build      # typecheck + build de la PWA dans dist/
 ```
 
 Stack : React, Vite, TypeScript, Dexie (IndexedDB), ts-fsrs, SDK Anthropic, vite-plugin-pwa.
-Chaque push sur `main` ou sur la branche de travail est testé, construit et publié sur la branche `gh-pages` par [GitHub Actions](.github/workflows/deploy.yml).
+Chaque push sur `main` est testé, construit et publié sur GitHub Pages par [GitHub Actions](.github/workflows/deploy.yml) (Settings → Pages → Source : « GitHub Actions »).
 
 ## Design
 
