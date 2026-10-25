@@ -1,0 +1,36 @@
+{
+  "default": "clair",
+  "followSystem": { "light": "clair", "dark": "mocha" },
+  "themes": [
+    {
+      "id": "clair", "name": "Clair", "dark": false,
+      "colors": { "base": "#FAFAF9", "surface": "#FFFFFF", "border": "#E7E5E4", "strong": "#D6D3D1", "text": "#18181B", "sub": "#57534E", "onAccent": "#FFFFFF" },
+      "accents": { "jade": "#0F766E", "bleu": "#1D4ED8", "violet": "#6D28D9", "rose": "#BE123C", "ambre": "#B45309", "graphite": "#18181B" }
+    },
+    {
+      "id": "sombre", "name": "Sombre", "dark": true,
+      "colors": { "base": "#18181B", "surface": "#27272A", "border": "#3F3F46", "strong": "#52525B", "text": "#FAFAFA", "sub": "#A1A1AA", "onAccent": "#042F2E" },
+      "accents": { "jade": "#2DD4BF", "bleu": "#60A5FA", "violet": "#A78BFA", "rose": "#FB7185", "ambre": "#FBBF24", "argent": "#E4E4E7" }
+    },
+    {
+      "id": "latte", "name": "Latte", "dark": false, "source": "catppuccin",
+      "colors": { "base": "#EFF1F5", "surface": "#E6E9EF", "border": "#CCD0DA", "strong": "#BCC0CC", "text": "#4C4F69", "sub": "#6C6F85", "onAccent": "#EFF1F5" },
+      "accents": { "blue": "#1E66F5", "mauve": "#8839EF", "teal": "#179299", "green": "#40A02B", "peach": "#FE640B", "red": "#D20F39", "pink": "#EA76CB", "lavender": "#7287FD" }
+    },
+    {
+      "id": "frappe", "name": "Frappé", "dark": true, "source": "catppuccin",
+      "colors": { "base": "#303446", "surface": "#414559", "border": "#51576D", "strong": "#626880", "text": "#C6D0F5", "sub": "#A5ADCE", "onAccent": "#232634" },
+      "accents": { "mauve": "#CA9EE6", "blue": "#8CAAEE", "teal": "#81C8BE", "green": "#A6D189", "peach": "#EF9F76", "red": "#E78284", "pink": "#F4B8E4", "lavender": "#BABBF1" }
+    },
+    {
+      "id": "macchiato", "name": "Macchiato", "dark": true, "source": "catppuccin",
+      "colors": { "base": "#24273A", "surface": "#363A4F", "border": "#494D64", "strong": "#5B6078", "text": "#CAD3F5", "sub": "#A5ADCB", "onAccent": "#181926" },
+      "accents": { "mauve": "#C6A0F6", "blue": "#8AADF4", "teal": "#8BD5CA", "green": "#A6DA95", "peach": "#F5A97F", "red": "#ED8796", "pink": "#F5BDE6", "lavender": "#B7BDF8" }
+    },
+    {
+      "id": "mocha", "name": "Mocha", "dark": true, "source": "catppuccin",
+      "colors": { "base": "#1E1E2E", "surface": "#313244", "border": "#45475A", "strong": "#585B70", "text": "#CDD6F4", "sub": "#A6ADC8", "onAccent": "#11111B" },
+      "accents": { "mauve": "#CBA6F7", "blue": "#89B4FA", "teal": "#94E2D5", "green": "#A6E3A1", "peach": "#FAB387", "red": "#F38BA8", "pink": "#F5C2E7", "lavender": "#B4BEFE" }
+    }
+  ]
+}

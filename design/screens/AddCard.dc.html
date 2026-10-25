@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Ajouter une carte</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+HK:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#18181B;text-decoration:none}a:hover{color:#000}
+</style>
+</helmet>
+<div style="width: 390px; height: 940px; box-sizing: border-box; position: relative; overflow: hidden; background: #FAFAF9; font-family: Inter, system-ui, sans-serif; color: #18181B">
+<div style="padding: 48px 20px 0; display: flex; flex-direction: column; gap: 18px">
+<nav style="display: flex; justify-content: space-between; align-items: center">
+<a href="Deck.dc.html" style="height: 44px; display: flex; align-items: center; font-size: 16px; color: #44403C">Annuler</a>
+<h1 style="margin: 0; font-size: 17px; font-weight: 600">Nouvelle carte</h1>
+<a href="Deck.dc.html" style="height: 44px; display: flex; align-items: center; font-size: 16px; font-weight: 600; color: {{accent}}">Enregistrer</a>
+</nav>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="f-deck" style="font-size: 13px; font-weight: 600; color: #57534E">Deck</label>
+<select id="f-deck" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FFFFFF; font: inherit; font-size: 15px; color: #18181B">
+<option>Nourriture &amp; restaurant</option>
+<option>Bases du quotidien</option>
+<option>Transports</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="f-yue" style="font-size: 13px; font-weight: 600; color: #57534E">Mot · Cantonais</label>
+<input id="f-yue" type="text" value="飲茶" style="height: 56px; box-sizing: border-box; padding: 0 14px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FFFFFF; font-family: 'Noto Sans HK', sans-serif; font-size: 24px; color: #18181B">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="f-jp" style="font-size: 13px; font-weight: 600; color: #57534E">Prononciation · Jyutping (facultatif)</label>
+<input id="f-jp" type="text" value="jam2 caa4" style="height: 48px; box-sizing: border-box; padding: 0 14px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FFFFFF; font: inherit; font-size: 15px; color: #18181B">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="f-fr" style="font-size: 13px; font-weight: 600; color: #57534E">Traduction · Français</label>
+<input id="f-fr" type="text" value="Prendre le thé (dim sum)" style="height: 48px; box-sizing: border-box; padding: 0 14px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FFFFFF; font: inherit; font-size: 15px; color: #18181B">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="f-en" style="font-size: 13px; font-weight: 600; color: #57534E">Traduction secondaire · Anglais (facultatif)</label>
+<input id="f-en" type="text" value="to have dim sum" style="height: 48px; box-sizing: border-box; padding: 0 14px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FFFFFF; font: inherit; font-size: 15px; color: #18181B">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="f-ex" style="font-size: 13px; font-weight: 600; color: #57534E">Exemple (facultatif)</label>
+<textarea id="f-ex" rows="2" placeholder="Une phrase d'exemple…" style="box-sizing: border-box; padding: 12px 14px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FFFFFF; font: inherit; font-size: 15px; color: #18181B; resize: none"></textarea>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 600; color: #57534E">Audio</span>
+<div style="display: flex; gap: 10px">
+<button type="button" style="flex: 1; height: 48px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FFFFFF; font: inherit; font-size: 14px; font-weight: 600; color: #18181B; display: flex; align-items: center; justify-content: center; gap: 8px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path></svg>Voix de synthèse</button>
+<button type="button" style="flex: 1; height: 48px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FFFFFF; font: inherit; font-size: 14px; font-weight: 600; color: #18181B; display: flex; align-items: center; justify-content: center; gap: 8px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="6"></circle></svg>Enregistrer</button>
+</div>
+</div>
+<a href="AI.dc.html" style="height: 48px; border-radius: 12px; background: #F5F5F4; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 600">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.9 4.9 1.8-4.9 1.8L12 16.4l-1.8-4.9-4.9-1.8 4.9-1.8z"></path></svg>Compléter avec l'IA</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0F766E","options":["#0F766E","#1D4ED8","#B42318","#18181B"]},"$preview":{"width":390,"height":940}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#0F766E' };
+}
+}
+</script>
+</body>
+</html>

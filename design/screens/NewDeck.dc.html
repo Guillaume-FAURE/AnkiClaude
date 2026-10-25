@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Nouveau deck</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#18181B;text-decoration:none}a:hover{color:#000}
+</style>
+</helmet>
+<div style="width: 390px; height: 960px; box-sizing: border-box; position: relative; overflow: hidden; background: #FAFAF9; font-family: Inter, system-ui, sans-serif; color: #18181B">
+<div style="padding: 48px 20px 0; display: flex; flex-direction: column; gap: 18px">
+<nav style="display: flex; justify-content: space-between; align-items: center">
+<a href="Main.dc.html" style="height: 44px; display: flex; align-items: center; font-size: 16px; color: #44403C">Annuler</a>
+<h1 style="margin: 0; font-size: 17px; font-weight: 600">Nouveau deck</h1>
+<a href="Deck.dc.html" style="height: 44px; display: flex; align-items: center; font-size: 16px; font-weight: 600; color: {{accent}}">Créer</a>
+</nav>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="d-name" style="font-size: 13px; font-weight: 600; color: #57534E">Nom du deck</label>
+<input id="d-name" type="text" placeholder="Ex. : Bases du quotidien" style="height: 48px; box-sizing: border-box; padding: 0 14px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FFFFFF; font: inherit; font-size: 15px; color: #18181B">
+</div>
+<section style="padding: 16px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E7E5E4; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Langues</h2>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="d-target" style="font-size: 13px; font-weight: 600; color: #57534E">Langue étudiée</label>
+<select id="d-target" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FAFAF9; font: inherit; font-size: 15px; color: #18181B">
+<option>Cantonais</option>
+<option>Mandarin</option>
+<option>Japonais</option>
+<option>Coréen</option>
+<option>Espagnol</option>
+<option>Anglais</option>
+<option>Autre langue…</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="d-native" style="font-size: 13px; font-weight: 600; color: #57534E">Langue de traduction</label>
+<select id="d-native" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FAFAF9; font: inherit; font-size: 15px; color: #18181B">
+<option>Français</option>
+<option>Anglais</option>
+<option>Autre langue…</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="d-second" style="font-size: 13px; font-weight: 600; color: #57534E">Traduction secondaire (facultatif)</label>
+<select id="d-second" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FAFAF9; font: inherit; font-size: 15px; color: #18181B">
+<option>Anglais</option>
+<option>Aucune</option>
+<option>Autre langue…</option>
+</select>
+</div>
+</section>
+<section style="padding: 16px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E7E5E4; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Prononciation et audio</h2>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="d-roman" style="font-size: 13px; font-weight: 600; color: #57534E">Transcription</label>
+<select id="d-roman" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FAFAF9; font: inherit; font-size: 15px; color: #18181B">
+<option>Jyutping</option>
+<option>Pinyin</option>
+<option>Rōmaji</option>
+<option>Alphabet phonétique (API)</option>
+<option>Aucune</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="d-voice" style="font-size: 13px; font-weight: 600; color: #57534E">Voix de lecture</label>
+<select id="d-voice" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1px solid #D6D3D1; background: #FAFAF9; font: inherit; font-size: 15px; color: #18181B">
+<option>Chinois (Hong Kong) · voix du téléphone</option>
+<option>Aucune voix</option>
+</select>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 600; color: #57534E">Sens de révision</span>
+<div role="group" aria-label="Sens de révision" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 14px; background: #E7E5E4">
+<button type="button" aria-pressed="true" style="min-height: 44px; border: 0; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 600; color: #18181B">Étudiée → Trad.</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; border: 0; border-radius: 10px; background: transparent; font: inherit; font-size: 13px; font-weight: 500; color: #44403C">Trad. → Étudiée</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; border: 0; border-radius: 10px; background: transparent; font: inherit; font-size: 13px; font-weight: 500; color: #44403C">Les deux</button>
+</div>
+</section>
+<a href="AI.dc.html" style="height: 48px; border-radius: 12px; background: #F5F5F4; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 600">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.9 4.9 1.8-4.9 1.8L12 16.4l-1.8-4.9-4.9-1.8 4.9-1.8z"></path></svg>Remplir le deck avec l'IA</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0F766E","options":["#0F766E","#1D4ED8","#B42318","#18181B"]},"$preview":{"width":390,"height":960}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#0F766E' };
+}
+}
+</script>
+</body>
+</html>

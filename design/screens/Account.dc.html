@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Mon compte</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+HK:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{opacity:0.8}
+</style>
+</helmet>
+<div style="width: 390px; height: 1320px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.base}}; font-family: Inter, system-ui, sans-serif; color: {{t.text}}">
+<div style="padding: 48px 20px 40px; display: flex; flex-direction: column; gap: 20px">
+<nav style="display: flex; align-items: center; gap: 4px">
+<a href="Main.dc.html" aria-label="Retour aux decks" style="width: 44px; height: 44px; margin-left: -10px; display: flex; align-items: center; justify-content: center; color: {{t.text}}">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+</a>
+<h1 style="margin: 0; font-size: 20px; font-weight: 700">Mon compte</h1>
+</nav>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<div style="position: relative; width: 96px; height: 96px">
+<div style="width: 96px; height: 96px; border-radius: 48px; background: {{t.border}}; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 600; color: {{t.text}}">G</div>
+<button type="button" aria-label="Changer la photo de profil" style="position: absolute; right: -4px; bottom: -4px; width: 40px; height: 40px; border-radius: 20px; border: 3px solid {{t.base}}; background: {{t.text}}; color: {{t.base}}; display: flex; align-items: center; justify-content: center">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg>
+</button>
+</div>
+<span style="font-size: 14px; color: {{t.sub}}">Photo de profil</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="f-name" style="font-size: 13px; font-weight: 600; color: {{t.sub}}">Nom</label>
+<input id="f-name" type="text" placeholder="Votre nom" style="height: 48px; box-sizing: border-box; padding: 0 14px; border-radius: 12px; border: 1px solid {{t.strong}}; background: {{t.surface}}; font: inherit; font-size: 15px; color: {{t.text}}">
+</div>
+<section style="padding: 16px; border-radius: 16px; background: {{t.surface}}; border: 1px solid {{t.border}}; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r="1.5"></circle><circle cx="17.5" cy="10.5" r="1.5"></circle><circle cx="8.5" cy="7.5" r="1.5"></circle><path d="M12 2a10 10 0 0 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.4A5.6 5.6 0 0 0 22 9.8C22 5.5 17.5 2 12 2z"></path></svg>Apparence</h2>
+<button type="button" onClick="{{ toggleFollow }}" aria-pressed="{{ followPressed }}" style="min-height: 48px; padding: 0; border: 0; background: transparent; font: inherit; color: {{t.text}}; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-align: left">
+<span style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 15px; font-weight: 500">Suivre le thème du système</span>
+<span style="font-size: 13px; color: {{t.sub}}">Clair le jour, sombre la nuit</span>
+</span>
+<span style="width: 48px; height: 28px; flex-shrink: 0; box-sizing: border-box; padding: 3px; border-radius: 14px; background: {{switchTrack}}; display: flex; justify-content: {{switchAlign}}">
+<span style="width: 22px; height: 22px; border-radius: 11px; background: {{switchKnob}}"></span>
+</span>
+</button>
+<span style="font-size: 13px; font-weight: 600; color: {{t.sub}}">Thème</span>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{ themes }}" as="th" hint-placeholder-count="6">
+<button type="button" onClick="{{ th.pick }}" aria-pressed="{{ th.pressed }}" aria-label="Thème {{ th.name }}" style="padding: 6px 6px 8px; border-radius: 14px; border: 2px solid {{ th.ring }}; background: {{t.surface}}; font: inherit; color: {{t.text}}; display: flex; flex-direction: column; gap: 6px">
+<span style="height: 56px; border-radius: 9px; background: {{ th.base }}; box-sizing: border-box; padding: 8px; display: flex; flex-direction: column; gap: 5px; border: 1px solid {{ th.border }}">
+<span style="height: 8px; width: 70%; border-radius: 4px; background: {{ th.text }}"></span>
+<span style="flex: 1; border-radius: 6px; background: {{ th.surface }}; display: flex; align-items: center; justify-content: flex-end; padding: 0 5px">
+<span style="width: 12px; height: 12px; border-radius: 6px; background: {{ th.accent }}"></span>
+</span>
+</span>
+<span style="font-size: 13px; font-weight: 600">{{ th.name }}</span>
+</button>
+</sc-for>
+</div>
+<span style="font-size: 12px; color: {{t.sub}}">Latte, Frappé, Macchiato et Mocha : palettes Catppuccin</span>
+<span style="font-size: 13px; font-weight: 600; color: {{t.sub}}">Couleur d'accent</span>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{ accents }}" as="ac" hint-placeholder-count="8">
+<button type="button" onClick="{{ ac.pick }}" aria-pressed="{{ ac.pressed }}" aria-label="Accent {{ ac.name }}" style="width: 36px; height: 36px; border-radius: 18px; border: 0; padding: 0; background: {{ ac.color }}; box-shadow: {{ ac.shadow }}"></button>
+</sc-for>
+</div>
+<div style="padding: 14px; border-radius: 12px; background: {{t.base}}; border: 1px solid {{t.border}}; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<span style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-family: 'Noto Sans HK', sans-serif; font-size: 22px; font-weight: 500">你好</span>
+<span style="font-size: 13px; color: {{t.sub}}">nei5 hou2 · Bonjour</span>
+</span>
+<span style="height: 36px; padding: 0 14px; border-radius: 10px; background: {{t.accent}}; color: {{t.onAccent}}; display: flex; align-items: center; font-size: 14px; font-weight: 600">Aperçu</span>
+</div>
+</section>
+<section style="padding: 16px; border-radius: 16px; background: {{t.surface}}; border: 1px solid {{t.border}}; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"></circle><path d="M11 12l9-9M17 6l3 3"></path></svg>Connexion IA</h2>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="f-provider" style="font-size: 13px; font-weight: 600; color: {{t.sub}}">Fournisseur</label>
+<select id="f-provider" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1px solid {{t.strong}}; background: {{t.base}}; font: inherit; font-size: 15px; color: {{t.text}}">
+<option>Claude (Anthropic)</option>
+<option>Autre fournisseur</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="f-key" style="font-size: 13px; font-weight: 600; color: {{t.sub}}">Clé d'accès (API)</label>
+<input id="f-key" type="password" placeholder="sk-ant-…" style="height: 48px; box-sizing: border-box; padding: 0 14px; border-radius: 12px; border: 1px solid {{t.strong}}; background: {{t.base}}; font: inherit; font-size: 15px; color: {{t.text}}">
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.45; color: {{t.sub}}">La clé reste enregistrée uniquement sur ce téléphone.</p>
+<button type="button" style="height: 44px; border-radius: 12px; border: 1px solid {{t.accent}}; background: transparent; font: inherit; font-size: 15px; font-weight: 600; color: {{t.accent}}">Tester la connexion</button>
+</section>
+<section style="padding: 4px 16px; border-radius: 16px; background: {{t.surface}}; border: 1px solid {{t.border}}; display: flex; flex-direction: column">
+<button type="button" style="min-height: 48px; border: 0; border-bottom: 1px solid {{t.border}}; background: transparent; padding: 0; font: inherit; font-size: 15px; color: {{t.text}}; display: flex; justify-content: space-between; align-items: center">Exporter une sauvegarde
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<button type="button" style="min-height: 48px; border: 0; background: transparent; padding: 0; font: inherit; font-size: 15px; color: {{t.text}}; display: flex; justify-content: space-between; align-items: center">Importer une sauvegarde
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"initialTheme":{"editor":"enum","options":["clair","sombre","latte","frappe","macchiato","mocha"],"default":"clair"},"$preview":{"width":390,"height":1320}}'>
+class Component extends DCLogic {
+  state = { theme: null, accent: 0, follow: false };
+
+  themeList() {
+    return [
+      { id: 'clair', name: 'Clair', base: '#FAFAF9', surface: '#FFFFFF', border: '#E7E5E4', strong: '#D6D3D1', text: '#18181B', sub: '#57534E', onAccent: '#FFFFFF',
+        accents: [['Jade', '#0F766E'], ['Bleu', '#1D4ED8'], ['Violet', '#6D28D9'], ['Rose', '#BE123C'], ['Ambre', '#B45309'], ['Graphite', '#18181B']] },
+      { id: 'sombre', name: 'Sombre', base: '#18181B', surface: '#27272A', border: '#3F3F46', strong: '#52525B', text: '#FAFAFA', sub: '#A1A1AA', onAccent: '#042F2E',
+        accents: [['Jade', '#2DD4BF'], ['Bleu', '#60A5FA'], ['Violet', '#A78BFA'], ['Rose', '#FB7185'], ['Ambre', '#FBBF24'], ['Argent', '#E4E4E7']] },
+      { id: 'latte', name: 'Latte', base: '#EFF1F5', surface: '#E6E9EF', border: '#CCD0DA', strong: '#BCC0CC', text: '#4C4F69', sub: '#6C6F85', onAccent: '#EFF1F5',
+        accents: [['Blue', '#1E66F5'], ['Mauve', '#8839EF'], ['Teal', '#179299'], ['Green', '#40A02B'], ['Peach', '#FE640B'], ['Red', '#D20F39'], ['Pink', '#EA76CB'], ['Lavender', '#7287FD']] },
+      { id: 'frappe', name: 'Frappé', base: '#303446', surface: '#414559', border: '#51576D', strong: '#626880', text: '#C6D0F5', sub: '#A5ADCE', onAccent: '#232634',
+        accents: [['Mauve', '#CA9EE6'], ['Blue', '#8CAAEE'], ['Teal', '#81C8BE'], ['Green', '#A6D189'], ['Peach', '#EF9F76'], ['Red', '#E78284'], ['Pink', '#F4B8E4'], ['Lavender', '#BABBF1']] },
+      { id: 'macchiato', name: 'Macchiato', base: '#24273A', surface: '#363A4F', border: '#494D64', strong: '#5B6078', text: '#CAD3F5', sub: '#A5ADCB', onAccent: '#181926',
+        accents: [['Mauve', '#C6A0F6'], ['Blue', '#8AADF4'], ['Teal', '#8BD5CA'], ['Green', '#A6DA95'], ['Peach', '#F5A97F'], ['Red', '#ED8796'], ['Pink', '#F5BDE6'], ['Lavender', '#B7BDF8']] },
+      { id: 'mocha', name: 'Mocha', base: '#1E1E2E', surface: '#313244', border: '#45475A', strong: '#585B70', text: '#CDD6F4', sub: '#A6ADC8', onAccent: '#11111B',
+        accents: [['Mauve', '#CBA6F7'], ['Blue', '#89B4FA'], ['Teal', '#94E2D5'], ['Green', '#A6E3A1'], ['Peach', '#FAB387'], ['Red', '#F38BA8'], ['Pink', '#F5C2E7'], ['Lavender', '#B4BEFE']] }
+    ];
+  }
+
+  renderVals() {
+    const list = this.themeList();
+    const currentId = this.state.theme ?? this.props.initialTheme ?? 'clair';
+    const cur = list.find((x) => x.id === currentId) ?? list[0];
+    const accIdx = Math.min(this.state.accent, cur.accents.length - 1);
+    const accent = cur.accents[accIdx][1];
+    const t = { ...cur, accent };
+    const follow = this.state.follow;
+    return {
+      t,
+      themes: list.map((x) => ({
+        id: x.id, name: x.name, base: x.base, surface: x.surface, border: x.border, text: x.text,
+        accent: x.accents[0][1],
+        pressed: x.id === cur.id ? 'true' : 'false',
+        ring: x.id === cur.id ? accent : cur.border,
+        pick: () => this.setState({ theme: x.id, accent: 0 })
+      })),
+      accents: cur.accents.map(([name, color], i) => ({
+        name, color,
+        pressed: i === accIdx ? 'true' : 'false',
+        shadow: i === accIdx ? `0 0 0 3px ${cur.surface}, 0 0 0 5px ${cur.text}` : 'none',
+        pick: () => this.setState({ accent: i })
+      })),
+      followPressed: follow ? 'true' : 'false',
+      switchTrack: follow ? accent : cur.strong,
+      switchKnob: follow ? cur.onAccent : cur.surface,
+      switchAlign: follow ? 'flex-end' : 'flex-start',
+      toggleFollow: () => this.setState({ follow: !follow })
+    };
+  }
+}
+</script>
+</body>
+</html>
