@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createEmptyCard } from 'ts-fsrs';
 import type { Card, Deck } from '../db';
-import { buildQueue, deckStats, formatInterval, grade, preview, Rating } from './srs';
+import { buildQueue, deckStats, formatInterval, grade, mixQueue, preview, Rating } from './srs';
 
 const now = new Date('2026-10-25T10:00:00Z');
 
@@ -46,10 +46,18 @@ function reviewed(dueOffsetDays: number) {
 }
 
 describe('buildQueue', () => {
-  it('puts due cards first, most overdue first, then limits new cards', () => {
+  it('takes every due card and the oldest new cards up to the daily limit', () => {
     const cards = [card(1), card(2, { forward: reviewed(-1) }), card(3), card(4, { forward: reviewed(-3) }), card(5), card(6, { forward: reviewed(2) })];
     const queue = buildQueue(deck(), cards, 0, now);
-    expect(queue.map((q) => q.cardId)).toEqual([4, 2, 1, 3]);
+    expect(queue.map((q) => q.cardId).sort()).toEqual([1, 2, 3, 4]);
+  });
+
+  it('shuffles the order', () => {
+    const cards = Array.from({ length: 30 }, (_, i) => card(i + 1));
+    const orders = new Set(
+      Array.from({ length: 5 }, () => buildQueue(deck({ newPerDay: 30 }), cards, 0, now).map((q) => q.cardId).join(',')),
+    );
+    expect(orders.size).toBeGreaterThan(1);
   });
 
   it('respects new cards already seen today', () => {
@@ -59,10 +67,22 @@ describe('buildQueue', () => {
 
   it('queues both directions when the deck reviews both ways', () => {
     const queue = buildQueue(deck({ direction: 'both', newPerDay: 10 }), [card(1)], 0, now);
-    expect(queue).toEqual([
-      { cardId: 1, direction: 'forward' },
-      { cardId: 1, direction: 'reverse' },
+    expect(queue).toHaveLength(2);
+    expect(new Set(queue.map((q) => q.direction))).toEqual(new Set(['forward', 'reverse']));
+  });
+
+  it('never shows both directions of a card back to back', () => {
+    const items = Array.from({ length: 8 }, (_, i) => i + 1).flatMap((id) => [
+      { cardId: id, direction: 'forward' as const },
+      { cardId: id, direction: 'reverse' as const },
     ]);
+    for (let run = 0; run < 200; run++) {
+      const queue = mixQueue(items);
+      expect(queue).toHaveLength(16);
+      // Every card appears once before any card appears a second time.
+      expect(new Set(queue.slice(0, 8).map((q) => q.cardId)).size).toBe(8);
+      for (let i = 1; i < queue.length; i++) expect(queue[i].cardId).not.toBe(queue[i - 1].cardId);
+    }
   });
 });
 

@@ -74,23 +74,57 @@ export function deckStats(deck: Deck, cards: Card[], newSeenToday: number, now =
   };
 }
 
-/** Builds a session: due reviews first (most overdue first), then today's new cards. */
-export function buildQueue(deck: Deck, cards: Card[], newSeenToday: number, now = new Date()): QueueItem[] {
+export function shuffle<T>(items: T[], random: () => number = Math.random): T[] {
+  const out = [...items];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+/**
+ * Orders a session at random, showing each card once before any card comes back
+ * in its other direction, so a word and its translation never follow each other.
+ */
+export function mixQueue(items: QueueItem[], random: () => number = Math.random): QueueItem[] {
+  const first: QueueItem[] = [];
+  const siblings: QueueItem[] = [];
+  const seen = new Set<number>();
+  for (const item of shuffle(items, random)) {
+    if (seen.has(item.cardId)) siblings.push(item);
+    else {
+      seen.add(item.cardId);
+      first.push(item);
+    }
+  }
+  const rest = shuffle(siblings, random);
+  // Avoid a sibling right at the seam between the two halves.
+  if (rest.length > 1 && first.length && rest[0].cardId === first[first.length - 1].cardId) {
+    [rest[0], rest[1]] = [rest[1], rest[0]];
+  }
+  return [...first, ...rest];
+}
+
+/** Builds a session from due reviews and today's new cards (oldest first), in random order. */
+export function buildQueue(
+  deck: Deck,
+  cards: Card[],
+  newSeenToday: number,
+  now = new Date(),
+  random: () => number = Math.random,
+): QueueItem[] {
   const dirs = directionsOf(deck);
-  const due: { item: QueueItem; at: number }[] = [];
+  const due: QueueItem[] = [];
   const fresh: QueueItem[] = [];
   for (const card of cards) {
     for (const direction of dirs) {
-      if (isDue(card, direction, now)) {
-        due.push({ item: { cardId: card.id, direction }, at: card.srs[direction]!.due.getTime() });
-      } else if (isNew(card, direction)) {
-        fresh.push({ cardId: card.id, direction });
-      }
+      if (isDue(card, direction, now)) due.push({ cardId: card.id, direction });
+      else if (isNew(card, direction)) fresh.push({ cardId: card.id, direction });
     }
   }
-  due.sort((a, b) => a.at - b.at);
   const limit = Math.max(0, deck.newPerDay - newSeenToday);
-  return [...due.map((d) => d.item), ...fresh.slice(0, limit)];
+  return mixQueue([...due, ...fresh.slice(0, limit)], random);
 }
 
 export function grade(card: Card, direction: Direction, rating: Grade, now = new Date()): FsrsCard {
