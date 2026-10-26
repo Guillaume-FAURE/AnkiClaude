@@ -8,6 +8,7 @@ import { cardFieldsFromDraft, completeCard, draftFromCard } from '../lib/ai';
 import { languageLabel, transcriptionLabel } from '../lib/languages';
 import { getSetting } from '../lib/settings';
 import { playWord, speak } from '../lib/speech';
+import { directionsOf, formatDueDate, GRADES, scheduleSummary, stateLabel } from '../lib/srs';
 import { wordClass } from './DeckPage';
 
 function useRecorder(onDone: (blob: Blob) => void) {
@@ -49,6 +50,10 @@ export default function CardForm() {
   const editingId = params.id ? Number(params.id) : null;
   const navigate = useNavigate();
   const decks = useLiveQuery(() => db.decks.toArray());
+  const history = useLiveQuery(
+    () => (editingId === null ? [] : db.logs.where('cardId').equals(editingId).reverse().sortBy('reviewedAt')),
+    [editingId],
+  );
   const [card, setCard] = useState<NewCard | null>(null);
   const [busy, setBusy] = useState(false);
   const [aiError, setAiError] = useState('');
@@ -235,6 +240,45 @@ export default function CardForm() {
         <SparkleIcon size={18} /> {busy ? 'L’IA complète la carte…' : 'Compléter avec l’IA'}
       </button>
       {aiError && <div className="notice error">{aiError}</div>}
+
+      {editingId !== null && (
+        <section className="card panel">
+          <h2>Révision</h2>
+          {directionsOf(deck).map((d) => {
+            const srs = card.srs[d];
+            const label =
+              d === 'forward'
+                ? `${languageLabel(deck.targetLang)} → ${languageLabel(deck.nativeLang)}`
+                : `${languageLabel(deck.nativeLang)} → ${languageLabel(deck.targetLang)}`;
+            return (
+              <div key={d} className="stack" style={{ gap: 4 }}>
+                <span className="field-label">{label}</span>
+                <span style={{ fontSize: 15, fontWeight: 600 }}>Prochaine révision : {scheduleSummary({ ...card, id: 0 }, d)}</span>
+                {srs && srs.reps > 0 && (
+                  <span className="muted small">
+                    {stateLabel(srs.state)} · intervalle {srs.scheduled_days} j · {srs.reps} révision{srs.reps > 1 ? 's' : ''} ·{' '}
+                    {srs.lapses} oubli{srs.lapses > 1 ? 's' : ''}
+                  </span>
+                )}
+              </div>
+            );
+          })}
+          {history && history.length > 0 && (
+            <div className="stack" style={{ gap: 6 }}>
+              <span className="field-label">Historique</span>
+              {history.slice(0, 15).map((log) => (
+                <span key={log.id} className="small spread">
+                  <span className="muted">
+                    {formatDueDate(log.reviewedAt)}
+                    {directionsOf(deck).length > 1 ? (log.direction === 'forward' ? ' · →' : ' · ←') : ''}
+                  </span>
+                  <span>{GRADES.find((g) => g.rating === log.rating)?.label ?? log.rating}</span>
+                </span>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
       {editingId === null ? (
         <button type="button" className="btn block" disabled={!canSave} onClick={() => save(true)}>

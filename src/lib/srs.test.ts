@@ -87,6 +87,15 @@ describe('scheduling', () => {
   });
 });
 
+describe('new cards', () => {
+  it('graduate on "Je me souviens" instead of coming back the same session', () => {
+    const p = preview(card(1), 'forward', now);
+    const day = 86400000;
+    expect(p[Rating.Good].getTime() - now.getTime()).toBeGreaterThanOrEqual(day);
+    expect(p[Rating.Again].getTime() - now.getTime()).toBeLessThan(day);
+  });
+});
+
 describe('formatInterval', () => {
   it.each([
     [30 * 1000, '< 1 min'],

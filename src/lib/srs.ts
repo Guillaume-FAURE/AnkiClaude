@@ -3,7 +3,9 @@ import type { Card, Deck, Direction } from '../db';
 
 export { Rating, State };
 
-const scheduler = fsrs({ enable_fuzz: true });
+// One 10-minute learning step: a new card answered "Je me souviens" graduates
+// straight away (about two days) instead of coming back ten minutes later.
+const scheduler = fsrs({ enable_fuzz: true, learning_steps: ['10m'] });
 
 /** The three answers offered during review. */
 export const GRADES = [
@@ -139,4 +141,37 @@ export function startOfToday(now = new Date()): Date {
   const d = new Date(now);
   d.setHours(0, 0, 0, 0);
   return d;
+}
+
+const STATE_LABELS: Record<number, string> = {
+  [State.New]: 'Nouvelle',
+  [State.Learning]: 'En apprentissage',
+  [State.Review]: 'En révision',
+  [State.Relearning]: 'À réapprendre',
+};
+
+export function stateLabel(state: State): string {
+  return STATE_LABELS[state] ?? '';
+}
+
+/** "aujourd’hui à 14:30", "demain à 09:00", "mer. 29 oct." */
+export function formatDueDate(due: Date, now = new Date()): string {
+  const days = Math.round((startOfToday(due).getTime() - startOfToday(now).getTime()) / 86400000);
+  const time = due.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  if (days === 0) return `aujourd’hui à ${time}`;
+  if (days === 1) return `demain à ${time}`;
+  return due.toLocaleDateString('fr-FR', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    ...(due.getFullYear() !== now.getFullYear() ? { year: 'numeric' } : {}),
+  });
+}
+
+/** Short schedule summary for a card in one direction. */
+export function scheduleSummary(card: Card, direction: Direction, now = new Date()): string {
+  const s = card.srs[direction];
+  if (!s || s.state === State.New) return 'Nouvelle';
+  if (s.due.getTime() <= now.getTime()) return 'À revoir maintenant';
+  return `${formatDueDate(s.due, now)} · dans ${formatInterval(s.due, now)}`;
 }

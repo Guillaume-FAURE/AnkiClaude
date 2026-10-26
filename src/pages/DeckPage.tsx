@@ -4,6 +4,7 @@ import { AiFab, BackButton, TopBar } from '../components/common';
 import { DotsIcon, SearchIcon } from '../components/Icons';
 import { languageLabel, transcriptionLabel } from '../lib/languages';
 import { useDeckOverview } from '../lib/queries';
+import { directionsOf, scheduleSummary } from '../lib/srs';
 
 const CJK = new Set(['yue', 'zh', 'ja', 'ko']);
 
@@ -37,6 +38,7 @@ export default function DeckPage() {
 
   const { deck, cards, stats } = overview;
   const pending = stats.due + stats.newToday;
+  const dirs = directionsOf(deck).length;
   const q = query.trim().toLowerCase();
   const shown = [...cards]
     .reverse()
@@ -140,12 +142,17 @@ export default function DeckPage() {
           </p>
         )}
         {shown.map((c) => (
-          <Link key={c.id} to={`/card/${c.id}`} className="word-row">
+          <Link key={c.id} to={`/card/${c.id}`} className="word-row" style={{ flexWrap: 'wrap', rowGap: 4 }}>
             <span className="row grow" style={{ gap: 10, alignItems: 'baseline', flexWrap: 'wrap' }}>
               <span className={`word ${wordClass(deck.targetLang)}`}>{c.word}</span>
               {c.pronunciation && <span className="muted small">{c.pronunciation}</span>}
             </span>
             <span style={{ fontSize: 15, textAlign: 'right' }}>{c.translation}</span>
+            <span className="muted small" style={{ flexBasis: '100%' }}>
+              {directionsOf(deck)
+                .map((d) => (dirs > 1 ? `${d === 'forward' ? '→' : '←'} ` : '') + scheduleSummary(c, d))
+                .join('   ')}
+            </span>
           </Link>
         ))}
       </section>
