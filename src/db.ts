@@ -21,6 +21,8 @@ export interface Deck {
   newPerDay: number;
   /** Show the transcription with the word on the question side (absent = true). */
   showPronunciationOnFront?: boolean;
+  /** Show the example sentence on the question side (absent = true). */
+  showExampleOnFront?: boolean;
   createdAt: Date;
   lastReviewedAt: Date | null;
 }

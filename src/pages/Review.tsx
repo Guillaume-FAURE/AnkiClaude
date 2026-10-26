@@ -6,7 +6,7 @@ import { db, type Card, type Deck } from '../db';
 import { languageLabel } from '../lib/languages';
 import { newSeenToday } from '../lib/queries';
 import { playWord, speak, stopSpeaking } from '../lib/speech';
-import { buildQueue, formatInterval, grade, GRADES, preview, shuffle, Rating, srsOf, type QueueItem } from '../lib/srs';
+import { buildQueue, formatInterval, grade, GRADES, preview, shuffle, splitExampleTranslation, Rating, srsOf, type QueueItem } from '../lib/srs';
 import { wordClass } from './DeckPage';
 
 /** Cards answered within this delay come back in the same session. */
@@ -199,6 +199,8 @@ export default function Review() {
   const promptText = forward ? card.word : card.translation;
   const progress = Math.min(100, Math.round((Math.min(position, firstPassSize) / Math.max(1, firstPassSize)) * 100));
   const play = () => playWord(card.word, deck.targetLang, deck.voiceURI, card.audio);
+  const showPronunciation = deck.showPronunciationOnFront !== false;
+  const examplePronunciation = splitExampleTranslation(card.exampleTranslation, deck.transcription !== 'none').pronunciation;
 
   return (
     <main className="review">
@@ -224,18 +226,45 @@ export default function Review() {
 
       {!revealed ? (
         <>
-          <button type="button" className="review-card" onClick={() => setRevealed(true)}>
+          {/* Not a <button>: it holds the example's own speaker button. "Afficher la réponse" stays the keyboard path. */}
+          <div className="review-card" style={{ cursor: 'pointer' }} onClick={() => setRevealed(true)}>
             <span className="eyebrow">{languageLabel(promptLang)}</span>
             <span className={`prompt-word ${wordClass(promptLang)}`}>{promptText}</span>
-            {forward && card.pronunciation && deck.showPronunciationOnFront !== false && (
+            {forward && card.pronunciation && showPronunciation && (
               <span className="muted" style={{ fontSize: 20 }}>
                 {card.pronunciation}
               </span>
             )}
+            {forward && card.example && deck.showExampleOnFront !== false && (
+              <div className="example">
+                <div className="stack grow" style={{ gap: 4 }}>
+                  <span className={wordClass(deck.targetLang)} style={{ fontSize: 18 }}>
+                    {card.example}
+                  </span>
+                  {showPronunciation && examplePronunciation && (
+                    <span className="muted" style={{ fontSize: 14 }}>
+                      {examplePronunciation}
+                    </span>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  className="round"
+                  style={{ width: 44, height: 44, border: 0 }}
+                  aria-label="Écouter l’exemple"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    speak(card.example, deck.targetLang, deck.voiceURI);
+                  }}
+                >
+                  <SpeakerIcon size={20} />
+                </button>
+              </div>
+            )}
             <span className="muted" style={{ fontSize: 14 }}>
               Touchez la carte pour révéler
             </span>
-          </button>
+          </div>
           {forward && (
             <div className="row" style={{ justifyContent: 'center' }}>
               <button type="button" className="round" style={{ width: 72, height: 72 }} aria-label="Écouter la prononciation" onClick={play}>

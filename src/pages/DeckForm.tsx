@@ -210,6 +210,20 @@ export default function DeckForm() {
             <span className="switch" />
           </button>
         )}
+        {deck.direction !== 'reverse' && (
+          <button
+            type="button"
+            className="toggle-row"
+            aria-pressed={deck.showExampleOnFront !== false}
+            onClick={() => set('showExampleOnFront', deck.showExampleOnFront === false)}
+          >
+            <span className="stack" style={{ gap: 2 }}>
+              <span style={{ fontSize: 15, fontWeight: 500 }}>Afficher la phrase d’exemple sur la question</span>
+              <span className="muted small">Pour réviser le mot dans son contexte, avant de révéler la traduction</span>
+            </span>
+            <span className="switch" />
+          </button>
+        )}
         <Field label="Nouvelles cartes par jour" htmlFor="d-new">
           <input
             id="d-new"

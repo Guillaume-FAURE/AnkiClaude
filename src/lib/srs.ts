@@ -175,3 +175,14 @@ export function scheduleSummary(card: Card, direction: Direction, now = new Date
   if (s.due.getTime() <= now.getTime()) return 'À revoir maintenant';
   return `${formatDueDate(s.due, now)} · dans ${formatInterval(s.due, now)}`;
 }
+
+/**
+ * The AI writes example translations as "<transcription> — <translation>";
+ * split them so the transcription can be shown before the answer.
+ */
+export function splitExampleTranslation(text: string, hasTranscription: boolean) {
+  const at = hasTranscription ? text.indexOf(' — ') : -1;
+  return at > 0
+    ? { pronunciation: text.slice(0, at).trim(), translation: text.slice(at + 3).trim() }
+    : { pronunciation: '', translation: text };
+}

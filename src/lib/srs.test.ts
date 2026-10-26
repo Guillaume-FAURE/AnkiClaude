@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createEmptyCard } from 'ts-fsrs';
 import type { Card, Deck } from '../db';
-import { buildQueue, deckStats, formatInterval, grade, preview, Rating } from './srs';
+import { buildQueue, deckStats, formatInterval, grade, preview, Rating, splitExampleTranslation } from './srs';
 
 const now = new Date('2026-10-25T10:00:00Z');
 
@@ -107,5 +107,18 @@ describe('formatInterval', () => {
     [400 * 86400 * 1000, '1 an'],
   ])('%i ms → %s', (ms, label) => {
     expect(formatInterval(new Date(now.getTime() + ms), now)).toBe(label);
+  });
+});
+
+describe('splitExampleTranslation', () => {
+  it('separates the transcription from the translation', () => {
+    expect(splitExampleTranslation('nei5 sik6 zo2 faan6 mei6 aa3? — Tu as mangé ?', true)).toEqual({
+      pronunciation: 'nei5 sik6 zo2 faan6 mei6 aa3?',
+      translation: 'Tu as mangé ?',
+    });
+  });
+
+  it('leaves the text alone without a transcription', () => {
+    expect(splitExampleTranslation('Hola — Bonjour', false)).toEqual({ pronunciation: '', translation: 'Hola — Bonjour' });
   });
 });
